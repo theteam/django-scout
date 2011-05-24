@@ -7,7 +7,7 @@ f.close()
 
 setup(
     name='django-scout',
-    version='0.1',
+    version='0.1-alpha',
     description='A django app that provides a production site monitoring wall.',
     long_description=readme,
     author='Darian Moody, Alfredo Aguirre, The Team',
@@ -15,6 +15,7 @@ setup(
     url='https://github.com/theteam/django-scout',
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
+    install_requires=['requests>=0.4'],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
