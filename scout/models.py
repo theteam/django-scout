@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from scout.choices import HTTP_STATUS_CODES
 from scout.managers import ActiveManager, InactiveManager
 
 ###
@@ -73,7 +74,7 @@ class Project(TimestampModel, ActiveModel):
         super(Project, self).save(*args, **kwargs)
 
 
-class UptimeTest(TimestampModel, ActiveModel):
+class StatusTest(TimestampModel, ActiveModel):
     """
     Represents one test which is linked to a project;
     this allows us to ping more than one URL per
@@ -81,8 +82,10 @@ class UptimeTest(TimestampModel, ActiveModel):
     options to a specfic instance of a test allowing
     them to be more granular.
     """
+
     project = models.ForeignKey('scout.Project', related_name='tests')
     url = models.URLField(max_length=255, verify_exists=False) 
+    expected_status =  models.PositiveSmallIntegerField(choices=HTTP_STATUS_CODES)
 
     def __unicode__(self):
         return u"Test: %s" % self.url
