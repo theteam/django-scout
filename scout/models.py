@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext_lazy as _
 
 from scout.choices import HTTP_STATUS_CODES
 from scout.managers import ActiveManager, InactiveManager
@@ -36,6 +37,9 @@ class ActiveModel(models.Model):
     class Meta:
         abstract = True
 
+###
+# Actual Models
+###
 
 class Client(TimestampModel, ActiveModel):
     """
@@ -45,6 +49,8 @@ class Client(TimestampModel, ActiveModel):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="client-images/", max_length=255, 
+                              blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -85,7 +91,42 @@ class StatusTest(TimestampModel, ActiveModel):
 
     project = models.ForeignKey('scout.Project', related_name='tests')
     url = models.URLField(max_length=255, verify_exists=False) 
-    expected_status =  models.PositiveSmallIntegerField(choices=HTTP_STATUS_CODES)
+    expected_status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
+    priority = models.SmallIntegerField(blank=True, null=True, 
+                help_text="Used to define order of processing as well as display.")
+
+    class Meta:
+        ordering = ['priority']
 
     def __unicode__(self):
         return u"Test: %s" % self.url
+
+
+class StatusChange(models.Model):
+    """
+    This is effectively our logging table; we only log
+    errors as the rest can be considered to be expected
+    returns. An error counts as any status code response
+    which was not expected or no response at all.
+    """
+    EXPECTED = 'OK'
+    UNEXPECTED = 'ERR'
+    STATUS_CHOICES = (
+        (EXPECTED, _('Expected')),        
+        (UNEXPECTED, _('Unexpected')),        
+    )
+
+    test = models.ForeignKey('scout.StatusTest', related_name='status_changes')
+    # Don't need date updated so we keep things lean here 
+    # by not subclassing the Timestamp abstract model.
+    returned_status = models.PositiveSmallIntegerField(choices=HTTP_STATUS_CODES)
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_added']
+
+    def __unicode__(self):
+        return u"[%s] <%s> %s" % (self.date_added, self.get_status_display,
+                                  self.test)
+
