@@ -30,7 +30,7 @@ class ActiveModel(models.Model):
     """
     is_active = models.BooleanField(default=True)
 
-    objects = models.Manager
+    objects = models.Manager()
     active = ActiveManager()
     inactive = InactiveManager()
 
@@ -96,7 +96,7 @@ class StatusTest(TimestampModel, ActiveModel):
                 help_text="Used to define order of display.")
 
     class Meta:
-        ordering = ['priority']
+        ordering = ['display_order']
 
     def __unicode__(self):
         return u"Test: %s" % self.url

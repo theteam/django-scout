@@ -16,7 +16,8 @@ setup(
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
     install_requires=['requests>=0.4',
-                      'lockfile>=0.9.1'],
+                      'lockfile>=0.9.1',
+                      'PIL>=1.1.7'],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',

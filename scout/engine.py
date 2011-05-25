@@ -1,4 +1,4 @@
-from scout.logging import log
+from scout.logger import log
 from scout.models import StatusTest, StatusChange
 
 
@@ -15,8 +15,8 @@ class PingRunner(object):
         """
         # Gets all active tests where the project and client
         # are also set to active.
-        tests = StatusTest.active.filter(project__active=True, 
-                                         project__client__active=True)
+        tests = StatusTest.active.filter(project__is_active=True, 
+                                         project__client__is_active=True)
         return tests
 
     def run_tests(self):
