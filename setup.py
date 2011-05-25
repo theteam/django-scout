@@ -15,7 +15,8 @@ setup(
     url='https://github.com/theteam/django-scout',
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
-    install_requires=['requests>=0.4'],
+    install_requires=['requests>=0.4',
+                      'lockfile>=0.9.1'],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',

@@ -92,8 +92,8 @@ class StatusTest(TimestampModel, ActiveModel):
     project = models.ForeignKey('scout.Project', related_name='tests')
     url = models.URLField(max_length=255, verify_exists=False) 
     expected_status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
-    priority = models.SmallIntegerField(blank=True, null=True, 
-                help_text="Used to define order of processing as well as display.")
+    display_order = models.SmallIntegerField(blank=True, null=True, 
+                help_text="Used to define order of display.")
 
     class Meta:
         ordering = ['priority']
