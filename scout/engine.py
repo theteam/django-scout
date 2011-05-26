@@ -69,7 +69,7 @@ class PingRunner(object):
         except URLError, e:
             # This is a hard error without even an HTTP response
             # and therefore should always be logged.
-            log.info('URL failed. %s' % e)
+            log.info('URL failed to provide a response. %s' % e)
             self._log(test, response=False)
             return
         self._run_response_handlers(test, response)
@@ -98,6 +98,8 @@ class PingRunner(object):
         if response.status_code != test.expected_status:
             # This is a hard failure, we need to log this
             # to keep track of down time.
+            log.info("[UNEXPECTED] Exp: %s, rec: %s." % (test.expected_status,
+                                                         response.status_code))
             return True
         else:
             try:
@@ -110,6 +112,7 @@ class PingRunner(object):
                 if last_log.result == StatusChange.UNEXPECTED:
                     # The last log found was an error, as we're not getting the
                     # expected result back, we need to log this success.
+                    log.info("[EXPECTED] Recovered from an unexpected response last run.")
                     return True
                 else:
                     # The last log found was a success, therefore we do not need
