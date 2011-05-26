@@ -25,7 +25,7 @@ class PingRunner(object):
         else:
             self.response_handlers = self._setup_response_handlers(RESPONSE_HANDLERS)
 
-    def _setup_response_handlers(response_handlers):
+    def _setup_response_handlers(self, response_handlers):
         """
         Returns a list of classes as loaded from the list 
         of dot-seperated module strings passed in.
@@ -72,9 +72,9 @@ class PingRunner(object):
             log.info('URL failed. %s' % e)
             self._log(test, response=False)
             return
-        self._run_response_handlers(response)
-        if self._is_loggable(self, test, response):
-            self._log()
+        self._run_response_handlers(test, response)
+        if self._is_loggable(test, response):
+            self._log(test, response)
         return
 
     def _run_response_handlers(self, test, response):
