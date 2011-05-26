@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from scout.models import Client, Project, StatusTest
+from scout.models import Client, Project, StatusTest, StatusChange
 
 class ClientAdmin(admin.ModelAdmin):
     date_heirarchy = 'date_added'
@@ -23,5 +23,10 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class StatusChangeAdmin(admin.ModelAdmin):
+    list_display = ['test', 'expected_status', 'returned_status', 'result']
+
+
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(StatusChange, StatusChangeAdmin)

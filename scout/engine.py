@@ -129,12 +129,16 @@ class PingRunner(object):
         """
         data = {'test': test,
                 'expected_status': test.expected_status}
-        if response:
+        # Annoyingly a non success status code will cause the response
+        # to evaluate to False so I can't simply test if we have
+        # a response by going 'if response'.
+        if hasattr(response, 'status_code'):
             data['returned_status'] = response.status_code
             data['result'] = StatusChange.UNEXPECTED if \
                                 test.expected_status != response.status_code \
                                 else StatusChange.EXPECTED
         else:
+            print "logging"
             data['result'] = StatusChange.UNEXPECTED
         log = StatusChange.objects.create(**data)
         return log
