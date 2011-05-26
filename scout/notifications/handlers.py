@@ -21,14 +21,16 @@ class LoggingNotificationHandler(BaseNotificationHandler):
     """
 
     def as_signal(self, sender, instance, created, using, **kwargs):
+        print "Hitting %s" % self.__class__.__name__
         if created:
             if instance.result == StatusChange.EXPECTED:
                 log.info("[EXPECTED] Recovered from an unexpected " \
-                         "response last run.")
+                         "response last run. <%s>" % instance.test.url)
             elif instance.result == StatusChange.UNEXPECTED:
-                log.info("[UNEXPECTED] Exp: %s, rec: %s." % (
+                log.info("[UNEXPECTED] Exp: %s, rec: %s. <%s>" % (
                                                     instance.expected_status,
-                                                    instance.returned_status))
+                                                    instance.returned_status,
+                                                    instance.test.url))
 
 
 class EmailNotificationHandler(BaseNotificationHandler):
@@ -38,4 +40,5 @@ class EmailNotificationHandler(BaseNotificationHandler):
     """
 
     def as_signal(self, sender, instance, created, using, **kwargs):
+        print "Hitting %s" % self.__class__.__name__
         pass
