@@ -3,6 +3,8 @@ from urllib2 import URLError
 import requests
 from scout.logger import log
 from scout.models import StatusTest, StatusChange
+from scout.settings import RESPONSE_HANDLERS
+from scout.utils import get_module_from_module_string
 
 
 class PingRunner(object):
@@ -10,6 +12,28 @@ class PingRunner(object):
     The core of the live site monitor, this class runs
     the request tests and deals with them appropriately.
     """
+
+    def __init__(self, response_handlers=False, *args, **kwargs):
+        """
+        Initialise the ping runner.
+        * response_handlers = an iterative of module strings to load the response
+                              handlers, if none are provided then the one found
+                              via the settings are used.
+        """
+        if response_handlers:
+            self.response_handlers = self._setup_response_handlers(response_handlers)
+        else:
+            self.response_handlers = self._setup_response_handlers(RESPONSE_HANDLERS)
+
+    def _setup_response_handlers(response_handlers):
+        """
+        Returns a list of classes as loaded from the list 
+        of dot-seperated module strings passed in.
+        """
+        handlers = []
+        for handler_string in response_handlers:
+            handlers.append(get_module_from_module_string(handler_string))
+        return handlers
 
     def get_tests(self):
         """
@@ -22,14 +46,18 @@ class PingRunner(object):
                                          project__client__is_active=True)
         return tests
 
-    def run_tests(self):
+    def run_tests(self, tests=False):
         """
-        The actual runner method, runs the test and reports back
-        True if it ran succesfully.
+        The actual runner method, runs the tests and reports back
+        True if it ran succesfully. A queryset of StatusTests can be
+        provided for overrideability but the default is to use those
+        provided by self.get_tests()
         """
-        tests = self.get_tests()
+        if not tests:
+            tests = self.get_tests()
         for test in tests:
             self.run_single_test(test)
+        return
 
     def run_single_test(self, test):
         """
@@ -41,13 +69,23 @@ class PingRunner(object):
         except URLError, e:
             # This is a hard error without even an HTTP response
             # and therefore should always be logged.
-            #TODO LOG
             log.info('URL failed. %s' % e)
+            self._log(test, response=False)
             return
-        #TODO run handlers
+        self._run_response_handlers(response)
         if self._is_loggable(self, test, response):
             self._log()
+        return
 
+    def _run_response_handlers(self, test, response):
+        """
+        Runs all the loaded response handlers against the
+        response, this is for plugin-like functionality.
+        """
+        for handler in self.response_handlers:
+            instance = handler(test, response)
+            instance.handle_response()
+        return
 
     def _is_loggable(self, test, response):
         """
