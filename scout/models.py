@@ -91,7 +91,7 @@ class StatusTest(TimestampModel, ActiveModel):
 
     project = models.ForeignKey('scout.Project', related_name='tests')
     url = models.URLField(max_length=255, verify_exists=False) 
-    expected_status_code = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
+    expected_status = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
     display_order = models.SmallIntegerField(blank=True, null=True, 
                 help_text="Used to define order of display.")
 
@@ -117,10 +117,16 @@ class StatusChange(models.Model):
     )
 
     test = models.ForeignKey('scout.StatusTest', related_name='status_changes')
+    # We log the expected status here rather than relying on what the StatusTest's
+    # version is currently set to as that is not guaranteed to be the same.
+    expected_status = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
+    # As we might not even get a response, the returned_status field is
+    # nullable so that we have some of showing that.
+    returned_status = models.PositiveSmallIntegerField(choices=HTTP_STATUS_CODES,
+                        null=True, blank=True)
+    result = models.CharField(max_length=3, choices=STATUS_CHOICES)
     # Don't need date updated so we keep things lean here 
     # by not subclassing the Timestamp abstract model.
-    returned_status = models.PositiveSmallIntegerField(choices=HTTP_STATUS_CODES)
-    status = models.CharField(max_length=3, choices=STATUS_CHOICES)
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
