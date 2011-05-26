@@ -116,14 +116,16 @@ class StatusChange(models.Model):
         (UNEXPECTED, _('Unexpected')),        
     )
 
-    test = models.ForeignKey('scout.StatusTest', related_name='status_changes')
-    # We log the expected status here rather than relying on what the StatusTest's
-    # version is currently set to as that is not guaranteed to be the same.
+    test = models.ForeignKey('scout.StatusTest', 
+                             related_name='status_changes')
+    # We log the expected status here rather than relying on what the 
+    # StatusTest's version is currently set to as that is not guaranteed 
+    # to be the same.
     expected_status = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
     # As we might not even get a response, the returned_status field is
     # nullable so that we have some of showing that.
-    returned_status = models.PositiveSmallIntegerField(choices=HTTP_STATUS_CODES,
-                        null=True, blank=True)
+    returned_status = models.PositiveSmallIntegerField(
+                        choices=HTTP_STATUS_CODES, null=True, blank=True)
     result = models.CharField(max_length=3, choices=STATUS_CHOICES)
     # Don't need date updated so we keep things lean here 
     # by not subclassing the Timestamp abstract model.

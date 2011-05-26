@@ -15,4 +15,5 @@ DEFAULT_RESPONSE_HANDLERS = (
     'scout.response_handlers.DummyResponseHandler',
 )
 
-RESPONSE_HANDLERS = getattr(settings, 'SCOUT_RESPONSE_HANDLERS', DEFAULT_RESPONSE_HANDLERS)
+RESPONSE_HANDLERS = getattr(settings, 'SCOUT_RESPONSE_HANDLERS', 
+                            DEFAULT_RESPONSE_HANDLERS)

@@ -16,14 +16,16 @@ class PingRunner(object):
     def __init__(self, response_handlers=False, *args, **kwargs):
         """
         Initialise the ping runner.
-        * response_handlers = an iterative of module strings to load the response
-                              handlers, if none are provided then the one found
-                              via the settings are used.
+        * response_handlers = an iterative of module strings to load the 
+                              response handlers, if none are provided then 
+                              the one found via the settings are used.
         """
         if response_handlers:
-            self.response_handlers = self._setup_response_handlers(response_handlers)
+            self.response_handlers = self._setup_response_handlers(
+                                        response_handlers)
         else:
-            self.response_handlers = self._setup_response_handlers(RESPONSE_HANDLERS)
+            self.response_handlers = self._setup_response_handlers(
+                                        RESPONSE_HANDLERS)
 
     def _setup_response_handlers(self, response_handlers):
         """
@@ -98,25 +100,23 @@ class PingRunner(object):
         if response.status_code != test.expected_status:
             # This is a hard failure, we need to log this
             # to keep track of down time.
-            log.info("[UNEXPECTED] Exp: %s, rec: %s." % (test.expected_status,
-                                                         response.status_code))
             return True
         else:
             try:
-                last_log = StatusChange.objects.filter(test=test).order_by('-date_added')[0]
+                last_log = StatusChange.objects.filter(test=test)\
+                           .order_by('-date_added')[0]
             except IndexError:
-                # No status change logs exist for this test, either first run or 
-                # never had a failure so it is not necessary to log.
+                # No status change logs exist for this test, either first run 
+                # or never had a failure so it is not necessary to log.
                 return False
             else:
                 if last_log.result == StatusChange.UNEXPECTED:
                     # The last log found was an error, as we're not getting the
                     # expected result back, we need to log this success.
-                    log.info("[EXPECTED] Recovered from an unexpected response last run.")
                     return True
                 else:
-                    # The last log found was a success, therefore we do not need
-                    # to log further requests (as uptime is assumed).
+                    # The last log found was a success, therefore we do not 
+                    # need to log further requests (as uptime is assumed).
                     return False
 
 
@@ -131,8 +131,8 @@ class PingRunner(object):
                 'expected_status': test.expected_status}
         if response:
             data['returned_status'] = response.status_code
-            data['result'] = StatusChange.UNEXPECTED \
-                                if test.expected_status != response.status_code \
+            data['result'] = StatusChange.UNEXPECTED if \
+                                test.expected_status != response.status_code \
                                 else StatusChange.EXPECTED
         else:
             data['result'] = StatusChange.UNEXPECTED
