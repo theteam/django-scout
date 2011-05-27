@@ -63,10 +63,10 @@ class AdminEmailNotificationHandler(BaseNotificationHandler):
             subject = "%s " % settings.EMAIL_SUBJECT_PREFIX
             context = {'log': instance}
             if instance.is_error():
-                template = 'scout/email/admin_expected.txt'
+                template = 'scout/notifications/email/admin_expected.txt'
                 subject += "ERROR: "
             else:
-                template = 'scout/email/admin_unexpected.txt'
+                template = 'scout/notifications/email/admin_unexpected.txt'
                 subject += "RECOVERED: "
             subject += "%s %s" % (instance.project.client,
                                   instance.project)
