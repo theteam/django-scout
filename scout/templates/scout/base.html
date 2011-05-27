@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]><html lang="en" class="no-js ie-lte-8"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+	
+	<title>{% block title %}Scout{% endblock %}</title>
+	
+    <!--<link rel="stylesheet" href="{{ MEDIA_URL }}styles/jqui.css"/>-->
+	<script>document.documentElement.className += ' js'</script>
+</head>
+<body class="{% block html_classes %}{% endblock %}">
+	{% block body_content %}
+        {% include "scout/branding.html" %}
+		<div class="page">
+			<div class="article">
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+		
+		<div class="footer">
+			<div class="footer-inner">
+			</div>
+		</div>
+		
+	{% endblock %}
+	{% block body_script %}
+        <script src="{{MEDIA_URL}}scripts/jquery-1.4.3.js"></script>
+        <script src="{{MEDIA_URL}}scripts/jquery-ui-1.8.8.js"></script>
+        <script src="{{MEDIA_URL}}scripts/base.js"></script>
+		
+		<!--[if IE 6]>
+				<script src="{{MEDIA_URL}}scripts/belatedpng.js"></script>
+				<script src="{{MEDIA_URL}}scripts/pngfixes.js"></script>
+		<![endif]-->
+	{% endblock %}
+</body>
+</html>
