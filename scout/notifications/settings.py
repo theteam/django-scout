@@ -9,5 +9,10 @@ DEFAULT_NOTIFICATION_HANDLERS = (
     'scout.notifications.handlers.EmailNotificationHandler',
 )
 
+
+FROM_EMAIL = getattr(settings, 'SCOUT_NOTIFICATIONS_FROM_EMAIL',
+                     settings.DEFAULT_FROM_EMAIL)
+
+
 NOTIFICATION_HANDLERS = getattr(settings, 'SCOUT_NOTIFICATION_HANDLERS', 
                                 DEFAULT_NOTIFICATION_HANDLERS)

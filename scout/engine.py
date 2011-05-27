@@ -138,7 +138,6 @@ class PingRunner(object):
                                 test.expected_status != response.status_code \
                                 else StatusChange.EXPECTED
         else:
-            print "logging"
             data['result'] = StatusChange.UNEXPECTED
         log = StatusChange.objects.create(**data)
         return log

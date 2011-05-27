@@ -103,8 +103,7 @@ class StatusTest(TimestampModel, ActiveModel):
 
 
 class StatusChange(models.Model):
-    """
-    This is effectively our logging table; we only log
+    """This is effectively our logging table; we only log
     errors as the rest can be considered to be expected
     returns. An error counts as any status code response
     which was not expected or no response at all.
@@ -137,4 +136,14 @@ class StatusChange(models.Model):
     def __unicode__(self):
         return u"[%s] <%s> %s" % (self.date_added, self.get_status_display,
                                   self.test)
+
+    def is_error(self):
+        """Returns True if this log should be considered as an
+        unwanted occurance; allows us to do this in a centralised 
+        place so we don't have to constantly check with conditionals 
+        everywhere.
+        """
+        if self.result != self.EXPECTED:
+            return True
+        return False
 
