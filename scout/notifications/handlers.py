@@ -69,8 +69,8 @@ class AdminEmailNotificationHandler(BaseNotificationHandler):
             else:
                 template = 'scout/notifications/email/admin_unexpected.txt'
                 subject += "RECOVERED: "
-            subject += "%s %s" % (instance.project.client,
-                                  instance.project)
+            subject += "%s %s" % (instance.test.project.client,
+                                  instance.test.project)
             rendered = render_to_string(template, context)
             self.send_emails(subject, rendered, self.get_emails())
 
