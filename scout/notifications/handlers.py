@@ -72,7 +72,7 @@ class AdminEmailNotificationHandler(EmailNotificationHandler):
             subject += "%s %s" % (instance.test.project.client,
                                   instance.test.project)
             rendered = render_to_string(template, context)
-            self.send_emails(subject, rendered, self.get_emails())
+            self.send_emails(subject, rendered, self._get_emails())
 
     def _get_emails(self):
         return [x[1] for x in settings.ADMINS]
