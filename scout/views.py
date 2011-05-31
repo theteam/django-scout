@@ -1,2 +1,5 @@
+from django.http import HttpResponse
+
+
 def index(request):
-    pass
+    return HttpResponse('Test is up.')

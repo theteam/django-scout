@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from scout.logger import log
 from scout.notifications.settings import FROM_EMAIL
 
+
 class BaseNotificationHandler(object):
     """The base notication handler response, all new handlers 
     should subclass this and extend/override from there.
@@ -54,7 +55,7 @@ class EmailNotificationHandler(BaseNotificationHandler):
 
 
 class AdminEmailNotificationHandler(BaseNotificationHandler):
-    """ An email-based notification handler which simply
+    """An email-based notification handler which simply
     emails all the Admins located in the settings file.
     """
 

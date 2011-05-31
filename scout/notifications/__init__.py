@@ -6,9 +6,8 @@ from django.db.models.signals import post_save
 
 from scout.models import StatusChange
 from scout.notifications.settings import NOTIFICATION_HANDLERS
-from scout.signals import create_notification_profile
+from scout.notifications.signals import create_notification_profile
 from scout.utils import get_module_from_module_string
-
 
 handler_classes = []
 
