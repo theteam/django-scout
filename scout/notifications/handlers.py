@@ -38,9 +38,9 @@ class LoggingNotificationHandler(BaseNotificationHandler):
 
 
 class EmailNotificationHandler(BaseNotificationHandler):
-
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError("Do not use this class directly.")
+    """This is the base class for the email handlers and
+    as such should not be used directly without subclassing.
+    """
 
     def _get_emails(self):
         """Should return an iterative of email addresses.
@@ -54,7 +54,7 @@ class EmailNotificationHandler(BaseNotificationHandler):
         send_mail(subject, rendered_template, FROM_EMAIL, emails)
 
 
-class AdminEmailNotificationHandler(BaseNotificationHandler):
+class AdminEmailNotificationHandler(EmailNotificationHandler):
     """An email-based notification handler which simply
     emails all the Admins located in the settings file.
     """
@@ -78,7 +78,7 @@ class AdminEmailNotificationHandler(BaseNotificationHandler):
         return [x[1] for x in settings.ADMINS]
 
 
-class ProfileEmailNotificationHandler(BaseNotificationHandler):
+class ProfileEmailNotificationHandler(EmailNotificationHandler):
     """An email-based notification handler which ties in with
     the user profile system to support more of a subscription
     based notifying system.
