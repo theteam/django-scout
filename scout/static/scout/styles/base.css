@@ -118,7 +118,7 @@ button.custom, button.go {
 */
 /* Page container */
 	.page {
-		width: 969px;
+		width: 660px;
 		overflow: visible;
 		margin: 0 auto;
 	}
@@ -126,7 +126,7 @@ button.custom, button.go {
 /* Header */
 	.main-header {
         height: 126px;
-        width: 969px;
+        width: 660px;
 		position: relative;
         margin: 30px auto 0 auto;
 	}
@@ -246,7 +246,15 @@ button.custom, button.go {
    ul.project-list li {
        padding: 10px;
        margin-bottom: 10px;
-   
+       overflow: hidden;
+   }
+
+   ul.project-list li.up {
+       border: 2px solid #80bd00;
+   }
+
+   ul.project-list li.down {
+       border: 2px solid #ef3e42;
    }
 
    ul.project-list li img.client-image {
@@ -256,12 +264,41 @@ button.custom, button.go {
        border: 1px solid #efefef;
        padding: 4px;
        margin: 0 10px 0 0;
+    }
+
+   ul.project-list li h3 {
+       float: left;
+       width: 400px;
    }
 
-   ul.project-list li.up {
-       border: 1px solid #80bd00;
+   ul.project-list li div.project-status {
+       height: 50px;
+       width: 50px;
+       float: right;
+       -moz-border-radius: 25px;
+       -o-border-radius: 25px;
+       -webkit-border-radius: 25px;
+       border-radius: 25px;
+       overflow: hidden;
+       position: relative;
    }
 
-   ul.project-list li.down {
-       border: 1px solid #ef3e42;
+   ul.project-list li.up div.project-status {
+		background: transparent;
+		background: -webkit-gradient(linear, left top, left bottom, from(#deeebc), to(#80bd00));
+		background: -moz-linear-gradient(-90deg, #deeebc, #80bd00);
+		background: linear-gradient(-90deg, #deeebc, #80bd00);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#deeebc, endColorstr=#80bd00);
+   }
+
+   ul.project-list li.down div.project-status {
+		background: transparent;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ef3242));
+		background: -moz-linear-gradient(-90deg, #fff, #ef3242);
+		background: linear-gradient(-90deg, #fff, #ef3242);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#ffffff, endColorstr=#80bd00);
+   }
+
+   ul.project-list li .extra-details {
+       display: none;
    }

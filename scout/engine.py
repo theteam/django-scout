@@ -1,3 +1,4 @@
+import datetime
 from urllib2 import URLError
 
 import requests
@@ -7,15 +8,14 @@ from scout.settings import RESPONSE_HANDLERS
 from scout.utils import get_module_from_module_string
 
 
+
 class PingRunner(object):
-    """
-    The core of the live site monitor, this class runs
+    """The core of the live site monitor, this class runs
     the request tests and deals with them appropriately.
     """
 
     def __init__(self, response_handlers=False, *args, **kwargs):
-        """
-        Initialise the ping runner.
+        """Initialise the ping runner.
         * response_handlers = an iterative of module strings to load the 
                               response handlers, if none are provided then 
                               the one found via the settings are used.
@@ -28,8 +28,7 @@ class PingRunner(object):
                                         RESPONSE_HANDLERS)
 
     def _setup_response_handlers(self, response_handlers):
-        """
-        Returns a list of classes as loaded from the list 
+        """Returns a list of classes as loaded from the list 
         of dot-seperated module strings passed in.
         """
         handlers = []
@@ -38,8 +37,7 @@ class PingRunner(object):
         return handlers
 
     def get_tests(self):
-        """
-        Returns a queryset of StatusTest objects which
+        """Returns a queryset of StatusTest objects which
         will are ready to be tested.
         """
         # Gets all active tests where the project and client
@@ -47,8 +45,7 @@ class PingRunner(object):
         return StatusTest.active.all()
 
     def run_tests(self, tests=False):
-        """
-        The actual runner method, runs the tests and reports back
+        """The actual runner method, runs the tests and reports back
         True if it ran succesfully. A queryset of StatusTests can be
         provided for overrideability but the default is to use those
         provided by self.get_tests()
@@ -60,8 +57,7 @@ class PingRunner(object):
         return
 
     def run_single_test(self, test):
-        """
-        Given a StatusTest object, runs the test.
+        """Given a StatusTest object, runs the test.
         """
         log.info('Testing URL: %s' % test.url)
         try:
@@ -73,16 +69,16 @@ class PingRunner(object):
             self._log(test, response=False)
             return
         self._run_response_handlers(test, response)
+        test_log = None
         if self._is_loggable(test, response):
             # Log the result and then update the
             # 'cached' project status based on the log.
             test_log = self._log(test, response)
-            self._update_project_status(test, test_log)
+        self._update_project_status(test, test_log)
         return
 
     def _run_response_handlers(self, test, response):
-        """
-        Runs all the loaded response handlers against the
+        """Runs all the loaded response handlers against the
         response, this is for plugin-like functionality.
         """
         for handler in self.response_handlers:
@@ -91,8 +87,7 @@ class PingRunner(object):
         return
 
     def _is_loggable(self, test, response):
-        """
-        Returns True if the rest result should be logged, False otherwise.
+        """Returns True if the rest result should be logged, False otherwise.
         There are two scenarios where we need to log:
             1) If the response status code does not match our expected return
                and this is first occurance of this (since last success).
@@ -116,10 +111,8 @@ class PingRunner(object):
                 return True
             return False
 
-
     def _log(self, test, response=False):
-        """
-        Logs a response status change, if no response is provided
+        """Logs a response status change, if no response is provided
         then the presumption is that no response was returned and
         therefore we log as an unexpected event. Returns the created
         log object.
@@ -139,16 +132,20 @@ class PingRunner(object):
         log = StatusChange.objects.create(**data)
         return log
 
-    def _update_project_status(self, test, log):
-        """ We store a denormalized field on the project
-        showing the current status, this method updates 
-        that field based on the logging occurring and whether
-        it was an EXPECTED/UNEXPECTED result.
+    def _update_project_status(self, test, log=None):
+        """Updates the date_updated timestamp on the project
+        so we know when it was last tested and stores a 
+        denormalized field on the project showing the current 
+        status, this method updates that field based on the 
+        logging occurring and whether it was an 
+        EXPECTED/UNEXPECTED result.
         """
         project = test.project
-        if log.is_error():
-            project.working = False
-        else:
-            project.working = True
+        project.date_updated = datetime.datetime.now()
+        if not log is None:
+            if log.is_error():
+                project.working = False
+            else:
+                project.working = True
         project.save()
         return

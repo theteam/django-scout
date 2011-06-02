@@ -1,8 +1,9 @@
 {% extends "scout/base.html" %}
+{% load scout_humanize %}
 
 {% block content %}
     {% if projects %}
-        <h2>Monitoring. Last Update: Today 12:55pm</h2>
+    <h2>Last Monitoring Update: {{ last_update|naturaltime }} @ {{ last_update|date:"jS M Y H:i" }}.</h2>
         <ul class="project-list">
             {% for project in projects %}
                 <li class="{{ project.working|yesno:"up,down" }}">
@@ -10,6 +11,15 @@
                         <img class="client-image" src="{{ project.client.image.url }}" />
                     {% endif %}
                     <h3>{{ project.client.name }} - {{ project.name }}</h3>
+                    <div class="project-status"></div>
+                    <div class="extra-details">
+                        <h4>Running {{ project.tests.all.count }} tests; Last ran: {{ project.date_updated|date:"jS M Y H:i" }}.</h4>
+                        <ul class="test-list">
+                            {% for test in project.tests.all %}
+                                {{ test }}
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
