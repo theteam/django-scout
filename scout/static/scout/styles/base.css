@@ -89,7 +89,8 @@ button.custom, button.go {
 
 /* Rounded corners... */
 	div.article,
-    div.footer-inner {
+    div.footer-inner,
+    ul.project-list li {
 		-moz-border-radius: 5px;
 		-o-border-radius: 5px;
 		-webkit-border-radius: 5px;
@@ -108,52 +109,6 @@ button.custom, button.go {
 		-webkit-box-shadow: 0 1px 9px 0 #bbb;
 		box-shadow: 0 1px 9px 0 #bbb;
 		behavior: url(/assets/scripts/pie.htc);
-	}
-	}
-/* Gradient Headings */
-    .profile .updates {
-		border: 1px solid #ccdfee;
-		margin-top: 20px;
-		background: #fff;
-		overflow: hidden;
-	}
-	.profile .contact-details h2, .profile .updates h3 {
-		margin: 5px 0 10px;
-		padding: 5px 13px 10px;
-		
-		background: transparent;
-		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccdfee));
-		background: -moz-linear-gradient(-90deg, #fff, #ccdfee);
-		background: linear-gradient(-90deg, #fff, #ccdfee);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#ffffff, endColorstr=#ccdfee);
-		zoom: 1;
-	}
-	}
-	.pagination .next span, .home-tips .next, .recent-activity .next,
-	.latest-updates .controls .older span {
-		left: auto;
-		right: -10px;
-		background-position: -757px -184px;
-	}
-	.article p.page-details-paginate {
-		font-size: 1.19em;
-		position: absolute;
-		right: 35px;
-		z-index: 1;
-		margin: 8px 0;
-		*margin: 5px 0;
-	}
-/* promo list */
-	.tools-hub-intro, .promo-list .promo {
-		float: left;
-		margin: 15px 15px 0 0;
-	}
-	.promo-list {
-		display: inline;
-	}
-	.promo-list .promo {
-		width: 299px;
-		background: #fff;
 	}
 /*
 	The rest of this stylesheet is for specific pages or areas of pages.
@@ -287,13 +242,14 @@ button.custom, button.go {
    } 
 
    ul.project-list li {
+       padding: 10px;
    
    }
 
    ul.project-list li.up {
-        background: #80bd00;
+       border: 1px solid #80bd00;
    }
 
    ul.project-list li.down {
-       background: #ef3e42;
+       border: 1px solid #ef3e42;
    }

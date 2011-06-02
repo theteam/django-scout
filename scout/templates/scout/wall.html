@@ -6,8 +6,10 @@
         <ul class="project-list">
             {% for project in projects %}
                 <li class="{{ project.working|yesno:"up,down" }}">
-                {#<img class="client-image" src="{{ project.client.image.url }}" /> #}
-                    <h3>{{ project }}</h3>
+                    {% if project.client.image %}
+                        <img class="client-image" src="{{ project.client.image.url }}" />
+                    {% endif %}
+                    <h3>{{ project.client.name }} - {{ project.name }}</h3>
                 </li>
             {% endfor %}
         </ul>
