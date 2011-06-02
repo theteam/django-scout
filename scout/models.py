@@ -143,7 +143,7 @@ class StatusChange(models.Model):
         ordering = ['-date_added']
 
     def __unicode__(self):
-        return u"[%s] <%s> %s" % (self.date_added, self.get_status_display,
+        return u"[%s] <%s> %s" % (self.date_added, self.get_result_display,
                                   self.test)
 
     def is_error(self):
