@@ -1,0 +1,299 @@
+html {
+	background: #f3f0eb;
+	/* Fix for IE font-resizing */
+	font-size: 100%;
+	font-family: arial, sans-serif;
+	height: 100%;
+	color: #333;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	
+}
+
+body {
+	font-size: 12px;
+	*font-size: 75%;
+	/* Height and position to make the footer positioning work */
+	min-height: 100%;
+	_height: 100%;
+	position: relative;
+}
+
+ul, ol, li, form, dl, dt, dd {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: block;
+}
+
+a img {
+	border: 0;
+}
+
+a:link, a:visited {
+	color: #005daa;
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	text-decoration: underline;
+}
+
+input {
+	vertical-align: middle;
+}
+input[type=radio], input[type=checkbox] {
+	vertical-align: baseline;
+}
+
+.errorlist {
+	color: #f00;
+	font-weight: bold;
+}
+
+textarea {
+	font-family: arial, sans-serif;
+	font-size: 1em;
+}
+
+input.text, textarea.text {
+	border: 1px solid #979797;
+	padding: 2px 3px;
+	
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) inset;
+	-ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) inset;
+	-o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) inset;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) inset;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) inset;
+	
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+        resize: none;
+}
+
+button.custom, button.go {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: none;
+	cursor: pointer;
+	overflow: visible;
+	vertical-align: middle;
+}
+
+/* Rounded corners... */
+	div.article,
+    div.footer-inner {
+		-moz-border-radius: 5px;
+		-o-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		overflow: hidden;
+		position: relative;
+		behavior: url(/assets/scripts/pie.htc);
+	}
+/* Box shadows */
+	div.article,
+    div.footer-inner {
+		background: #fff;
+		-moz-box-shadow: 0 1px 9px 0 #bbb;
+		-ms-box-shadow: 0 1px 9px 0 #bbb;
+		-o-box-shadow: 0 1px 9px 0 #bbb;
+		-webkit-box-shadow: 0 1px 9px 0 #bbb;
+		box-shadow: 0 1px 9px 0 #bbb;
+		behavior: url(/assets/scripts/pie.htc);
+	}
+	}
+/* Gradient Headings */
+    .profile .updates {
+		border: 1px solid #ccdfee;
+		margin-top: 20px;
+		background: #fff;
+		overflow: hidden;
+	}
+	.profile .contact-details h2, .profile .updates h3 {
+		margin: 5px 0 10px;
+		padding: 5px 13px 10px;
+		
+		background: transparent;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccdfee));
+		background: -moz-linear-gradient(-90deg, #fff, #ccdfee);
+		background: linear-gradient(-90deg, #fff, #ccdfee);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#ffffff, endColorstr=#ccdfee);
+		zoom: 1;
+	}
+	}
+	.pagination .next span, .home-tips .next, .recent-activity .next,
+	.latest-updates .controls .older span {
+		left: auto;
+		right: -10px;
+		background-position: -757px -184px;
+	}
+	.article p.page-details-paginate {
+		font-size: 1.19em;
+		position: absolute;
+		right: 35px;
+		z-index: 1;
+		margin: 8px 0;
+		*margin: 5px 0;
+	}
+/* promo list */
+	.tools-hub-intro, .promo-list .promo {
+		float: left;
+		margin: 15px 15px 0 0;
+	}
+	.promo-list {
+		display: inline;
+	}
+	.promo-list .promo {
+		width: 299px;
+		background: #fff;
+	}
+/*
+	The rest of this stylesheet is for specific pages or areas of pages.
+	Reusable styles should be above this comment
+*/
+/* Page container */
+	.page {
+		width: 969px;
+		overflow: visible;
+		margin: 0 auto;
+	}
+	
+/* Header */
+	.main-header {
+        height: 126px;
+        width: 969px;
+		position: relative;
+        margin: 30px auto 0 auto;
+	}
+	.main-header p {
+		margin: 0 auto;
+		width: 957px;
+		position: relative;
+	}
+/* Tabs */
+	.page {
+		position: relative;
+		margin-top: -55px;
+	}
+
+/* Body content */
+	.article {
+		overflow: hidden;
+		padding: 20px 21px 10px;
+		zoom: 1;
+	}
+
+	.article h1, .login-page h2 {
+		font: normal 2.17em OmnesMedium, arial, sans-serif;
+		color: #4c721d;
+		margin: 20px 0;
+	}
+
+	.article h2, .article h3, .login-page h3 {
+		font: bold 1.19em arial, sans-serif;
+		color: #333;
+	}
+	.article p {
+		line-height: 1.3;
+		margin: 1em 0;
+	}
+/* footer */
+	.page {
+		/* height of the footer, plus a gap */
+		padding-bottom: 110px;
+		*padding-bottom: 15px;
+	}
+	.footer {
+		width: 957px;
+		margin: 0 auto;
+	}
+	.footer-inner {
+		overflow: hidden;
+		width: 957px;
+		height: 100px;
+		background: #fff;
+		position: absolute;
+		*position: relative;
+		bottom: 0;
+	}
+	.footer h1 {
+		margin: 0; padding: 0;
+		overflow: hidden;
+		text-indent: -5000px;
+		height: 10px;
+		background: url(images/8bittrans.png) 0 -240px;
+	}
+	.footer ul {
+		overflow: hidden;
+		zoom: 1;
+		margin-top: 5px;
+	}
+	.footer li {
+		display: inline;
+	}
+	.footer li a {
+		float: left;
+		border-left: 1px solid #666;
+		padding: 0 10px;
+		font-weight: bold;
+	}
+	.footer li.first a {
+		border: none;
+		padding-left: 19px;
+	}
+	.footer li a.logout {
+		float: right;
+		padding-right: 19px;
+		border: none;
+	}
+	.footer small, .login-page .legal small {
+		color: #999;
+		font-size: 1em;
+	}
+	.footer .legal {
+		position: absolute;
+		bottom: 11px;
+		width: 100%;
+	}
+	.footer .legal p, .login-page .legal p {
+		padding: 0 19px;
+		margin: 3px 0;
+	}
+	.login-page .legal {
+		margin: 19px 0 20px;
+	}
+	.login-page .legal p {
+		padding: 0;
+	}
+	.footer .maintained, .login-page .maintained {
+		float: left;
+	}
+	.footer .copyright, .login-page .copyright {
+		float: right;
+	}
+
+/* Page specifics */
+
+   ul.project-list {
+       margin: 30px 0;
+   } 
+
+   ul.project-list li {
+   
+   }
+
+   ul.project-list li.up {
+        background: #80bd00;
+   }
+
+   ul.project-list li.down {
+       background: #ef3e42;
+   }

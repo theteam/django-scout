@@ -17,9 +17,10 @@ class StatusTestAdminInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     date_heirarchy = 'date_added'
     inlines = [StatusTestAdminInline]
-    list_display = ['name', 'client', 'description']
+    list_display = ['name', 'client', 'description', 'working']
     list_filter = ['client']
     prepopulated_fields = {"slug": ("name",)}
+    readonly_fields = ['working']
     search_fields = ['name']
 
 

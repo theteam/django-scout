@@ -44,9 +44,7 @@ class PingRunner(object):
         """
         # Gets all active tests where the project and client
         # are also set to active.
-        tests = StatusTest.active.filter(project__is_active=True, 
-                                         project__client__is_active=True)
-        return tests
+        return StatusTest.active.all()
 
     def run_tests(self, tests=False):
         """
@@ -76,7 +74,10 @@ class PingRunner(object):
             return
         self._run_response_handlers(test, response)
         if self._is_loggable(test, response):
-            self._log(test, response)
+            # Log the result and then update the
+            # 'cached' project status based on the log.
+            test_log = self._log(test, response)
+            self._update_project_status(test, test_log)
         return
 
     def _run_response_handlers(self, test, response):
@@ -93,31 +94,27 @@ class PingRunner(object):
         """
         Returns True if the rest result should be logged, False otherwise.
         There are two scenarios where we need to log:
-            1) If the response status code does not match our expected return.
+            1) If the response status code does not match our expected return
+               and this is first occurance of this (since last success).
             2) If the response status code does match our expected returns BUT
                the last time the Pinger ran it recorded a failure.
+        Therefore we always need to start by getting the last log.
         """
+        try:
+            last_log = StatusChange.objects.filter(test=test)\
+                       .order_by('-date_added')[0]
+        except IndexError:
+            last_log = None
         if response.status_code != test.expected_status:
-            # This is a hard failure, we need to log this
-            # to keep track of down time.
-            return True
+            if last_log and not last_log.is_error():
+                # 1) Was OK, now not OK. Log.
+                return True
+            return False
         else:
-            try:
-                last_log = StatusChange.objects.filter(test=test)\
-                           .order_by('-date_added')[0]
-            except IndexError:
-                # No status change logs exist for this test, either first run 
-                # or never had a failure so it is not necessary to log.
-                return False
-            else:
-                if last_log.result == StatusChange.UNEXPECTED:
-                    # The last log found was an error, as we're not getting the
-                    # expected result back, we need to log this success.
-                    return True
-                else:
-                    # The last log found was a success, therefore we do not 
-                    # need to log further requests (as uptime is assumed).
-                    return False
+            if last_log and last_log.is_error():
+                # 2) Was not OK, now is OK. Log.
+                return True
+            return False
 
 
     def _log(self, test, response=False):
@@ -141,3 +138,17 @@ class PingRunner(object):
             data['result'] = StatusChange.UNEXPECTED
         log = StatusChange.objects.create(**data)
         return log
+
+    def _update_project_status(self, test, log):
+        """ We store a denormalized field on the project
+        showing the current status, this method updates 
+        that field based on the logging occurring and whether
+        it was an EXPECTED/UNEXPECTED result.
+        """
+        project = test.project
+        if log.is_error():
+            project.working = False
+        else:
+            project.working = True
+        project.save()
+        return

@@ -3,7 +3,8 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from scout.choices import HTTP_STATUS_CODES
-from scout.managers import ActiveManager, InactiveManager
+from scout.managers import (ClientActiveManager, ProjectActiveManager, 
+                            StatusTestActiveManager)
 
 ###
 # Abstract Base classes
@@ -30,10 +31,6 @@ class ActiveModel(models.Model):
     """
     is_active = models.BooleanField(default=True)
 
-    objects = models.Manager()
-    active = ActiveManager()
-    inactive = InactiveManager()
-
     class Meta:
         abstract = True
 
@@ -51,6 +48,9 @@ class Client(TimestampModel, ActiveModel):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="client-images/", max_length=255, 
                               blank=True, null=True)
+
+    objects = models.Manager()
+    active = ClientActiveManager()
 
     def __unicode__(self):
         return self.name
@@ -70,6 +70,13 @@ class Project(TimestampModel, ActiveModel):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(blank=True)
+    # This is a denormalized cached field to store the 
+    # current status of the project (whether it's child
+    # tests are passing or not)
+    working = models.BooleanField(default=True)
+
+    objects = models.Manager()
+    active = ProjectActiveManager()
 
     def __unicode__(self):
         return self.name
@@ -81,12 +88,11 @@ class Project(TimestampModel, ActiveModel):
 
 
 class StatusTest(TimestampModel, ActiveModel):
-    """
-    Represents one test which is linked to a project;
-    this allows us to ping more than one URL per
-    project but also allows us to attach notification
-    options to a specfic instance of a test allowing
-    them to be more granular.
+    """Represents one test which is linked to a project;
+    this allows us to ping more than one URL per project 
+    but also allows us to attach notification options to
+    a specfic instance of a test allowing them to be
+    more granular.
     """
 
     project = models.ForeignKey('scout.Project', related_name='tests')
@@ -94,6 +100,9 @@ class StatusTest(TimestampModel, ActiveModel):
     expected_status = models.SmallIntegerField(choices=HTTP_STATUS_CODES)
     display_order = models.SmallIntegerField(blank=True, null=True, 
                 help_text="Used to define order of display.")
+
+    objects = models.Manager()
+    active = StatusTestActiveManager()
 
     class Meta:
         ordering = ['display_order']
