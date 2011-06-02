@@ -90,7 +90,9 @@ button.custom, button.go {
 /* Rounded corners... */
 	div.article,
     div.footer-inner,
-    ul.project-list li {
+    ul.project-list li,
+    ul.project-list li img.client-image {
+
 		-moz-border-radius: 5px;
 		-o-border-radius: 5px;
 		-webkit-border-radius: 5px;
@@ -243,7 +245,17 @@ button.custom, button.go {
 
    ul.project-list li {
        padding: 10px;
+       margin-bottom: 10px;
    
+   }
+
+   ul.project-list li img.client-image {
+       width: 40px;
+       height: 40px;
+       float: left;
+       border: 1px solid #efefef;
+       padding: 4px;
+       margin: 0 10px 0 0;
    }
 
    ul.project-list li.up {
