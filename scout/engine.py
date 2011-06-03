@@ -88,37 +88,29 @@ class PingRunner(object):
 
     def _is_loggable(self, test, response):
         """Returns True if the rest result should be logged, False otherwise.
-        There are two scenarios where we need to log:
+        There are three scenarios where we need to log:
             1) If the response status code does not match our expected return
                and this is first occurance of this (since last success).
             2) If the response status code does match our expected returns BUT
                the last time the Pinger ran it recorded a failure.
-        Therefore we always need to start by getting the last log.
+            3) If there has been no previous log.
         """
         try:
-            # We should only trust recent logs, thus we
-            # only get those from the last hour.
-            one_hour = datetime.timedelta(hours=1)
-            one_hour_ago = datetime.datetime.now() - one_hour
-            last_log = StatusChange.objects.filter(
-                                              test=test,
-                                              date_added__gte=one_hour_ago
-                                            ).order_by('-date_added')[0]
+            last_log = StatusChange.objects.filter(test=test).\
+                                            order_by('-date_added')[0]
         except IndexError:
-            last_log = None
+            # We don't have a log yet,
+            # we should get one.
+            return True
         if response.status_code != test.expected_status:
             # Unexpected response.
-            if last_log and not last_log.is_error():
+            if not last_log.is_error():
                 # RE: 1) Was OK, now not OK. Log.
-                return True
-            elif last_log is None:
-                # RE: 1) No previous log, as this is an
-                # error we need to log the first occurance.
                 return True
             return False
         else:
             # Expected response.
-            if last_log and last_log.is_error():
+            if last_log.is_error():
                 # 2) Was not OK, now is OK. Log.
                 return True
             return False

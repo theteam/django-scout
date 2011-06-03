@@ -12,18 +12,38 @@
         <ul class="project-list">
             {% for project in projects %}
                 <li class="{{ project.working|yesno:"up,down" }}">
-                    {% if project.client.image %}
-                        <img class="client-image" src="{{ project.client.image.url }}" />
-                    {% endif %}
-                    <h3>{{ project.client.name }} - {{ project.name }}</h3>
-                    <div class="project-status"></div>
+                    <div class="project">
+                        {% if project.client.image %}
+                            <img class="client-image" src="{{ project.client.image.url }}" />
+                        {% endif %}
+                        <h3>{{ project.client.name }} - {{ project.name }}</h3>
+                        <div class="project-status"></div>
+                    </div>
                     <div class="extra-details">
-                        <h4>Running {{ project.tests.all.count }} tests; Last ran: {{ project.date_updated|date:"jS M Y H:i" }}.</h4>
-                        <ul class="test-list">
+                        {% if project.working %}
+                            <h4>Last error: {{ project.last_log.date_added|naturaltime }}. Last checked {{ project.date_updated|naturaltime }}.</h4>
+                        {% else %}
+                            <h4>Alert raised {{ project.last_log.date_added|naturaltime }}. Last checked {{ project.date_updated|naturaltime }}.</h4>
+                        {% endif %}
+                        <table class="tests">
+                            <col class="url" />
+                            <col class="status_codes" span="2" />
+                            <col class="date" />
+                            <tr>
+                                <th>{% trans 'URL' %}</th>
+                                <th>{% trans 'Expected' %}</th>
+                                <th>{% trans 'Returned' %}</th>
+                                <th>{% trans 'Last changed' %}</th>
+                            </tr>
                             {% for test in project.tests.all %}
-                                {{ test }}
+                                <tr class="{{ test.last_log.is_error|yesno:"down,up" }}">
+                                    <td><a href="{{ test.url }}">{{ test.url }}</a></td>
+                                    <td>{{ test.last_log.expected_status }}</td>
+                                    <td>{{ test.last_log.returned_status }}</td>
+                                    <td>{{ test.last_log.date_added|date:"jS M Y H:i" }}
+                                </tr>
                             {% endfor %}
-                        </ul>
+                        </table>
                     </div>
                 </li>
             {% endfor %}

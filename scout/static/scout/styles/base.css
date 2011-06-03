@@ -2,7 +2,7 @@ html {
 	background: #f3f0eb;
 	/* Fix for IE font-resizing */
 	font-size: 100%;
-	font-family: arial, sans-serif;
+    font-family: 'Droid Sans Mono', arial, sans-serif;
 	height: 100%;
 	color: #333;
 }
@@ -55,7 +55,6 @@ input[type=radio], input[type=checkbox] {
 }
 
 textarea {
-	font-family: arial, sans-serif;
 	font-size: 1em;
 }
 
@@ -81,8 +80,8 @@ input.text, textarea.text {
 	div.article,
     div.footer-inner,
     ul.project-list li,
-    ul.project-list li img.client-image {
-
+    ul.project-list li img.client-image,
+    .extra-details table {
 		-moz-border-radius: 5px;
 		-o-border-radius: 5px;
 		-webkit-border-radius: 5px;
@@ -136,13 +135,12 @@ input.text, textarea.text {
 	}
 
 	.article h1, .login-page h2 {
-		font: normal 2.17em OmnesMedium, arial, sans-serif;
 		color: #4c721d;
 		margin: 20px 0;
 	}
 
 	.article h2, .article h3, .login-page h3 {
-		font: bold 1.19em arial, sans-serif;
+        font-size: 1.1em;
 		color: #333;
 	}
 	.article p {
@@ -168,12 +166,27 @@ input.text, textarea.text {
        overflow: hidden;
    }
 
+   .js ul.project-list li {
+       cursor: pointer;     
+   }
+
+   .js ul.project-list li:hover,
+   .js ul.project-list li:active,
+   .js ul.project-list li:focus {
+        background: #f4f4f4;
+        border: 2px solid #5c5c5c;
+   }
+
    ul.project-list li.up {
        border: 2px solid #80bd00;
    }
 
    ul.project-list li.down {
        border: 2px solid #ef3e42;
+   }
+
+   ul.project-list .project {
+       height: 50px;
    }
 
    ul.project-list li img.client-image {
@@ -218,6 +231,40 @@ input.text, textarea.text {
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#ffffff, endColorstr=#80bd00);
    }
 
-   ul.project-list li .extra-details {
+   .js ul.project-list li.up .extra-details {
        display: none;
+   }
+
+   ul.project-list h4 {
+    font-weight: normal;
+   }
+
+   table.tests {
+       border: 1px solid #efefef;
+       margin: 0 0 20px 0;
+   }
+
+   table.tests col.url, 
+   table.tests col.date {
+   }
+
+   table.tests tr th,
+   table.tests tr td {
+       padding: 6px;
+   }
+
+   table.tests tr.up {
+   
+   }
+
+   table.tests tr.down {
+       background:  
+   }
+
+   table.tests tr th {
+       text-align: left;
+   }
+
+   table.tests tr td {
+       border:;
    }

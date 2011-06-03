@@ -86,6 +86,20 @@ class Project(TimestampModel, ActiveModel):
             self.slug = slugify(self.name)
         super(Project, self).save(*args, **kwargs)
 
+    def last_log(self):
+        """Returns the latest StatusChange for any test
+        underneath this project. Caches state.
+        """
+        if hasattr(self, '_last_log'):
+            return self._last_log
+        else:   
+            try:
+                status_log = StatusChange.objects.filter(test__project=self)\
+                                .order_by('-date_added')[0]
+            except IndexError:
+                status_log = None
+        self._last_log = status_log
+        return self._last_log
 
 class StatusTest(TimestampModel, ActiveModel):
     """Represents one test which is linked to a project;
@@ -109,6 +123,20 @@ class StatusTest(TimestampModel, ActiveModel):
 
     def __unicode__(self):
         return u"Test: %s" % self.url
+
+    def last_log(self):
+        """Returns the latest StatusChange for this test,
+        if available - else None. Caches state.
+        """
+        if hasattr(self, '_last_log'):
+            return self._last_log
+        else:   
+            try:
+                status_log = self.status_changes.all().order_by('-date_added')[0]
+            except IndexError:
+                status_log = None
+        self._last_log = status_log
+        return self._last_log
 
 
 class StatusChange(models.Model):
