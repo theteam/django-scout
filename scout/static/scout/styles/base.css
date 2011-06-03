@@ -254,11 +254,11 @@ input.text, textarea.text {
    }
 
    table.tests tr.up {
-   
+       background: #f8ffea;
    }
 
    table.tests tr.down {
-       background:  
+       background:  #fff2f2;
    }
 
    table.tests tr th {
