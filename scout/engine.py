@@ -101,11 +101,17 @@ class PingRunner(object):
         except IndexError:
             last_log = None
         if response.status_code != test.expected_status:
+            # Unexpected response.
             if last_log and not last_log.is_error():
-                # 1) Was OK, now not OK. Log.
+                # RE: 1) Was OK, now not OK. Log.
+                return True
+            elif last_log is None:
+                # RE: 1) No previous log, as this is an
+                # error we need to log the first occurance.
                 return True
             return False
         else:
+            # Expected response.
             if last_log and last_log.is_error():
                 # 2) Was not OK, now is OK. Log.
                 return True

@@ -143,8 +143,7 @@ class StatusChange(models.Model):
         ordering = ['-date_added']
 
     def __unicode__(self):
-        return u"[%s] <%s> %s" % (self.date_added, self.get_result_display,
-                                  self.test.project.name)
+        return u"Status Log %s" % (self.pk)
 
     def is_error(self):
         """Returns True if this log should be considered as an

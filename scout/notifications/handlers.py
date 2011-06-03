@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 
 from scout.logger import log
 from scout.notifications.settings import FROM_EMAIL
@@ -71,10 +71,10 @@ class EmailNotificationHandler(BaseNotificationHandler):
             error_template, recovery_template = self._get_templates()
             if instance.is_error():
                 template = error_template
-                subject += _("PROBLEM: ")
+                subject = string_concat(subject, _("PROBLEM: "))
             else:
                 template = recovery_template 
-                subject += _("RECOVERED: ")
+                subject = string_concat(subject, _("RECOVERED: "))
             subject += u"%s %s" % (instance.test.project.client,
                                   instance.test.project)
             rendered = render_to_string(template, context)
