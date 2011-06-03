@@ -1,0 +1,12 @@
+## {{ log.test.project.client.name }} - {{ log.test.project.name }}
+
+URL: {{ log.test.url }}
+
+Expected Response: {{ log.expected_status }}
+Received Response: {{ log.returned_status|default:"No Response" }}
+
+Something's borked, fix it!
+
+You will be notified on recovery.
+
+-- The Scout

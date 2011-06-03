@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 from scout.logger import log
 from scout.notifications.settings import FROM_EMAIL
@@ -47,35 +48,55 @@ class EmailNotificationHandler(BaseNotificationHandler):
         """
         raise NotImplementedError
 
+    def _get_templates(self):
+        """Returns a two element tuple of template paths.
+        The first one being for errors, and the second one
+        for recovery use.
+        """
+        return ('scout/notifications/email/expected.txt',
+                'scout/notifications/email/unexpected.txt')
+
     def send_emails(self, subject, rendered_template, emails): 
         """Should, given a list of emails and a rendered
         template, dispatch an email to those that need it.
         """
         send_mail(subject, rendered_template, FROM_EMAIL, emails)
 
-
-class AdminEmailNotificationHandler(EmailNotificationHandler):
-    """An email-based notification handler which simply
-    emails all the Admins located in the settings file.
-    """
-
     def as_signal(self, sender, instance, created, using, **kwargs):
+        """The signal connector.
+        """
         if created:
-            subject = "%s " % settings.EMAIL_SUBJECT_PREFIX
+            subject = u"%s " % settings.EMAIL_SUBJECT_PREFIX
             context = {'log': instance}
+            error_template, recovery_template = self._get_templates()
             if instance.is_error():
-                template = 'scout/notifications/email/admin_expected.txt'
-                subject += "ERROR: "
+                template = error_template
+                subject += _("PROBLEM: ")
             else:
-                template = 'scout/notifications/email/admin_unexpected.txt'
-                subject += "RECOVERED: "
-            subject += "%s %s" % (instance.test.project.client,
+                template = recovery_template 
+                subject += _("RECOVERED: ")
+            subject += u"%s %s" % (instance.test.project.client,
                                   instance.test.project)
             rendered = render_to_string(template, context)
             self.send_emails(subject, rendered, self._get_emails())
 
+
+class AdminEmailNotificationHandler(EmailNotificationHandler):
+    """An email-based notification handler which simply
+    emails all the ADMINS located in the settings file.
+    """
+
     def _get_emails(self):
         return [x[1] for x in settings.ADMINS]
+
+
+class ManagersEmailNotificationHandler(EmailNotificationHandler):
+    """An email-based notification handler which simply
+    emails all the MANAGERS located in the settings file.
+    """
+
+    def _get_emails(self):
+        return [x[1] for x in settings.MANAGERS]
 
 
 class ProfileEmailNotificationHandler(EmailNotificationHandler):
@@ -88,6 +109,9 @@ class ProfileEmailNotificationHandler(EmailNotificationHandler):
         #TODO: Implement this; will require extra for handling
         # user subscriptions to certain projects (I wouldn't
         # handle subs on a per test basis, that seems too deep)
+        raise NotImplementedError
+
+    def _get_emails(self):
         raise NotImplementedError
 
     def as_signal(self, sender, instance, created, using, **kwargs):
