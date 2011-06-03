@@ -53,8 +53,8 @@ class EmailNotificationHandler(BaseNotificationHandler):
         The first one being for errors, and the second one
         for recovery use.
         """
-        return ('scout/notifications/email/expected.txt',
-                'scout/notifications/email/unexpected.txt')
+        return ('scout/notifications/email/unexpected.txt',
+                'scout/notifications/email/expected.txt')
 
     def send_emails(self, subject, rendered_template, emails): 
         """Should, given a list of emails and a rendered

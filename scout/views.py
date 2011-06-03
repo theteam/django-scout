@@ -9,7 +9,7 @@ class WallView(ListView):
     context_object_name = 'projects'
 
     def get_queryset(self):
-        return Project.active.all().order_by('-working')
+        return Project.active.all().order_by('working', 'client__name', 'name')
 
     def get_context_data(self, **kwargs):
         context = super(WallView, self).get_context_data(**kwargs)
