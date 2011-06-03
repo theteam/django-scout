@@ -77,16 +77,6 @@ input.text, textarea.text {
         resize: none;
 }
 
-button.custom, button.go {
-	padding: 0;
-	margin: 0;
-	border: 0;
-	background: none;
-	cursor: pointer;
-	overflow: visible;
-	vertical-align: middle;
-}
-
 /* Rounded corners... */
 	div.article,
     div.footer-inner,
@@ -99,18 +89,15 @@ button.custom, button.go {
 		border-radius: 5px;
 		overflow: hidden;
 		position: relative;
-		behavior: url(/assets/scripts/pie.htc);
 	}
 /* Box shadows */
-	div.article,
-    div.footer-inner {
+	div.article {
 		background: #fff;
 		-moz-box-shadow: 0 1px 9px 0 #bbb;
 		-ms-box-shadow: 0 1px 9px 0 #bbb;
 		-o-box-shadow: 0 1px 9px 0 #bbb;
 		-webkit-box-shadow: 0 1px 9px 0 #bbb;
 		box-shadow: 0 1px 9px 0 #bbb;
-		behavior: url(/assets/scripts/pie.htc);
 	}
 /*
 	The rest of this stylesheet is for specific pages or areas of pages.
@@ -162,79 +149,11 @@ button.custom, button.go {
 		line-height: 1.3;
 		margin: 1em 0;
 	}
-/* footer */
-	.page {
-		/* height of the footer, plus a gap */
-		padding-bottom: 110px;
-		*padding-bottom: 15px;
-	}
-	.footer {
-		width: 957px;
-		margin: 0 auto;
-	}
-	.footer-inner {
-		overflow: hidden;
-		width: 957px;
-		height: 100px;
-		background: #fff;
-		position: absolute;
-		*position: relative;
-		bottom: 0;
-	}
-	.footer h1 {
-		margin: 0; padding: 0;
-		overflow: hidden;
-		text-indent: -5000px;
-		height: 10px;
-		background: url(images/8bittrans.png) 0 -240px;
-	}
-	.footer ul {
-		overflow: hidden;
-		zoom: 1;
-		margin-top: 5px;
-	}
-	.footer li {
-		display: inline;
-	}
-	.footer li a {
-		float: left;
-		border-left: 1px solid #666;
-		padding: 0 10px;
-		font-weight: bold;
-	}
-	.footer li.first a {
-		border: none;
-		padding-left: 19px;
-	}
-	.footer li a.logout {
-		float: right;
-		padding-right: 19px;
-		border: none;
-	}
-	.footer small, .login-page .legal small {
-		color: #999;
-		font-size: 1em;
-	}
-	.footer .legal {
-		position: absolute;
-		bottom: 11px;
-		width: 100%;
-	}
-	.footer .legal p, .login-page .legal p {
-		padding: 0 19px;
-		margin: 3px 0;
-	}
 	.login-page .legal {
 		margin: 19px 0 20px;
 	}
 	.login-page .legal p {
 		padding: 0;
-	}
-	.footer .maintained, .login-page .maintained {
-		float: left;
-	}
-	.footer .copyright, .login-page .copyright {
-		float: right;
 	}
 
 /* Page specifics */

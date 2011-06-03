@@ -96,8 +96,14 @@ class PingRunner(object):
         Therefore we always need to start by getting the last log.
         """
         try:
-            last_log = StatusChange.objects.filter(test=test)\
-                       .order_by('-date_added')[0]
+            # We should only trust recent logs, thus we
+            # only get those from the last hour.
+            one_hour = datetime.timedelta(hours=1)
+            one_hour_ago = datetime.datetime.now() - one_hour
+            last_log = StatusChange.objects.filter(
+                                              test=test,
+                                              date_added__gte=one_hour_ago
+                                            ).order_by('-date_added')[0]
         except IndexError:
             last_log = None
         if response.status_code != test.expected_status:

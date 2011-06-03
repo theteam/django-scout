@@ -1,5 +1,5 @@
 {% extends "scout/base.html" %}
-{% load scout_humanize %}
+{% load i18n scout_humanize %}
 
 {% block meta %}
     {{ block.super }}
@@ -8,7 +8,7 @@
 
 {% block content %}
     {% if projects %}
-    <h2>Last Monitoring Update: {{ last_update|naturaltime }} @ {{ last_update|date:"jS M Y H:i" }}.</h2>
+    <h2>{% trans 'Last Monitoring Update' %}: {{ last_update|naturaltime }} @ {{ last_update|date:"jS M Y H:i" }}.</h2>
         <ul class="project-list">
             {% for project in projects %}
                 <li class="{{ project.working|yesno:"up,down" }}">
@@ -29,6 +29,6 @@
             {% endfor %}
         </ul>
     {% else %}
-    <h2>There are currently no sites to monitor.</h2>
+        <h2>{% trans 'There are currently no projects to monitor' %}.</h2>
     {% endif %}
 {% endblock %}
