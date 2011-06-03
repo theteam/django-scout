@@ -1,5 +1,8 @@
-## {{ log.test.project.client.name }} - {{ log.test.project.name }}
+SERVICE RECOVERED
+-----------------
 
+Client: {{ log.test.project.client.name }} 
+Project: {{ log.test.project.name }}
 URL: {{ log.test.url }}
 
 The URL is now receiving the expected response.

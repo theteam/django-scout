@@ -1,5 +1,8 @@
-## {{ log.test.project.client.name }} - {{ log.test.project.name }}
+SERVICE ALERT
+-------------
 
+Client: {{ log.test.project.client.name }}
+Project: {{ log.test.project.name }}
 URL: {{ log.test.url }}
 
 Expected Response: {{ log.expected_status }}

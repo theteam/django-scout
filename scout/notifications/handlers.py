@@ -75,8 +75,8 @@ class EmailNotificationHandler(BaseNotificationHandler):
             else:
                 template = recovery_template 
                 subject = string_concat(subject, _("RECOVERED: "))
-            subject += u"%s %s" % (instance.test.project.client,
-                                  instance.test.project)
+            subject += u"%s - %s" % (instance.test.project.client.name,
+                                  instance.test.project.name)
             rendered = render_to_string(template, context)
             self.send_emails(subject, rendered, self._get_emails())
 
