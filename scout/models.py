@@ -144,7 +144,7 @@ class StatusChange(models.Model):
 
     def __unicode__(self):
         return u"[%s] <%s> %s" % (self.date_added, self.get_result_display,
-                                  self.test)
+                                  self.test.project.name)
 
     def is_error(self):
         """Returns True if this log should be considered as an
