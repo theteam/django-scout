@@ -10,9 +10,3 @@ The URL is now receiving the expected response.
 Have a beer on me.
 
 -- The Scout
-
-    .:.    
-  _oOoOo
- [_|||||
-   |||||
-   ~~~~~
