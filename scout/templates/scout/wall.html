@@ -1,6 +1,11 @@
 {% extends "scout/base.html" %}
 {% load scout_humanize %}
 
+{% block meta %}
+    {{ block.super }}
+    <meta http-equiv="refresh" content="60" />
+{% endblock %}
+
 {% block content %}
     {% if projects %}
     <h2>Last Monitoring Update: {{ last_update|naturaltime }} @ {{ last_update|date:"jS M Y H:i" }}.</h2>
